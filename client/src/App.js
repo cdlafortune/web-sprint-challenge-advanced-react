@@ -5,6 +5,8 @@ import PlantList from "./components/PlantList";
 import ShoppingCart from "./components/ShoppingCart";
 import CheckoutForm from "./components/CheckoutForm";
 
+import {useLightMode} from "./hooks/useLightMode";
+
 import "./App.css";
 
 function App() {
@@ -21,6 +23,13 @@ function App() {
     setCart(cart.filter((p) => p.id !== plant.id));
   };
 
+  const [lightMode, setLightMode] = useLightMode(false);
+
+  const toggleMode = e => {
+    e.preventDefault();
+    setLightMode(!lightMode);
+  };
+
   return (
     <div>
       <Router>
@@ -28,12 +37,21 @@ function App() {
           <h1>
             React Plants <span role="img">🌿</span>
           </h1>
+
+          <span className="light-mode__toggle">
+            <div
+              onClick={toggleMode}
+              className={lightMode ? 'toggle toggled' : 'toggle'}
+            />
+          </span>
+          
           <ul className="steps">
             <li>
               <NavLink exact to="/">
                 Plants
               </NavLink>
             </li>
+            
             <li>
               <NavLink to="/cart">
                 Cart
@@ -42,6 +60,7 @@ function App() {
                 </span>
               </NavLink>
             </li>
+
           </ul>
         </nav>
         <Route
